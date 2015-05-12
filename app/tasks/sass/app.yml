@@ -1,11 +1,11 @@
 ---
 
-- name: [Sass] install needed packages
+- name: '[Sass] install needed packages'
   apt: pkg={{item}} state=present
   with_items:
     - ruby-full 
 
-- name: [Sass] install sass binary
+- name: '[Sass] install sass binary'
   gem:
     name=sass 
     state=present 

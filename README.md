@@ -25,6 +25,9 @@ Example Settings
 ----------------
 
 ```yaml
+db_admin_password: ...
+db_admin_username: ...
+
 apps:
     APP_KEY:
         build_steps: 

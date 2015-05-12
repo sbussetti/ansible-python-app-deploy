@@ -1,0 +1,92 @@
+---
+# TODO parameterized to respect app.build_steps
+
+- name: add nginx ppa
+  action: apt_repository repo=ppa:nginx/stable state=present
+  notify:
+    - update apt
+# force notification to happen now      
+- meta: flush_handlers
+
+- name: install packages needed for webservers
+  apt: pkg={{ item }} state=present
+  with_items:
+    - nginx         
+    # circus
+    - python-dev  
+    - libzmq-dev
+    - libevent-dev
+    # supervisor
+    - supervisor 
+
+- name: supervisor service state
+  service: name=supervisor state=started enabled=yes
+
+- name: install global libraries with pip
+  pip:
+    extra_args="-i {{pypi_mirror_url}}"
+    name={{item}}
+    state=present
+  with_items:
+    - circus
+    - circus-web
+#"
+
+- name: Service file for circusd
+  template:
+    src=circus-service.conf.j2
+    dest="/etc/init/circusd.conf"
+
+- name: Circus config dir
+  file:
+    path="{{circus_config_dir}}/include"
+    state=directory
+    mode=0755
+
+- name: Circus config file
+  sudo: True
+  template:
+    src=circus.ini.j2
+    dest="/etc/circus/circus.ini"
+    mode=0644
+  notify:
+    - restart circusd
+
+- name: circusd service state
+  service: name=circusd state=started enabled=yes
+
+- name: nginx config for circus panel
+  template:
+    src=nginx-circus-panel.conf.j2
+    dest={{nginx_config_dir}}/sites-available/circus.conf
+- file:
+    src={{nginx_config_dir}}/sites-available/circus.conf
+    dest={{nginx_config_dir}}/sites-enabled/circus.conf
+    state=link
+  notify:
+    - restart nginx
+
+- name: install main nginx conf
+  copy:
+    src=nginx.conf
+    dest={{nginx_config_dir}}/nginx.conf
+  notify:
+    - restart nginx
+
+- name: remove default nginx site
+  file:
+    path={{nginx_config_dir}}/sites-enabled/default 
+    state=absent
+  notify:
+    - restart nginx
+
+# - name: install htpasswd file
+#   copy:
+#     src=htpasswd
+#     dest={{nginx_config_dir}}/htpasswd
+#   notify:
+#    - restart nginx
+
+- name: nginx service state
+  service: name="nginx" enabled=yes state=started
+

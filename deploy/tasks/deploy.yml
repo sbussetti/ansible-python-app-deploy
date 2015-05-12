@@ -2,18 +2,20 @@
 
 - name: deploy private key
   copy:
-    content={{app.deploy_rsa_key}}
-    dest=/home/{{app.user}}/.ssh/id_rsa-{{app_name}}
+    content="{{app.deploy_rsa_key}}"
+    dest=/home/{{deploy_user}}/.ssh/id_rsa-{{app_name}}
+    owner={{deploy_user}}
+    group={{deploy_user}}
     mode=0600
 
 - name: Deploy Source
   git: 
     accept_hostkey=True
-    repo={{app.repo_url}} 
-    dest={{app_src_root}} 
-    remote={{app.repo_remote}} 
-    version={{app.repo_branch}}
-    key_file=/home/{{app.user}}/.ssh/id_rsa-{{app_name}}
+    repo="{{app.repo_url}}"
+    dest="{{app_src_root}}" 
+    remote="{{app.repo_remote}}" 
+    version="{{app.repo_branch}}"
+    key_file="/home/{{deploy_user}}/.ssh/id_rsa-{{app_name}}"
 
 - name: Install Python app dependencies from pip
   pip:
@@ -40,3 +42,10 @@
 
 - name: pyc cleanup
   command: pyclean {{app_src_root}}
+
+- name: ensure file ownership of source
+  file:
+    path={{app_src_root}}
+    owner={{app.user}}
+    group={{app.user}}
+    recurse=true

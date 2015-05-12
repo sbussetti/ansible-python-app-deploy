@@ -20,7 +20,6 @@
   with_items:
     - git-core
     - python-setuptools
-    - nginx
 
 - include: deploy.yml
     app={{apps[app_name]}}

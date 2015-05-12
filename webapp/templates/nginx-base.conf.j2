@@ -1,7 +1,7 @@
 server {
   {% block server %}
   listen  80;
-  server_name {{app.server_name}} www.{{app.server_name}} {{subdomain}}-{{app.server_name}};
+  server_name {{app.server_name}} www.{{app.server_name}};
   {% endblock server %}
 
   {% block logs %}
