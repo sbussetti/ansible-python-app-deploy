@@ -1,11 +1,11 @@
 ---
 
-- name: [nodejs] add nodesource gpg key
+- name: '[nodejs] add nodesource gpg key'
   apt_key:
     url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key
     state=present
 
-- name: [nodejs] add nodesource repo
+- name: '[nodejs] add nodesource repo'
   apt_repository:
     repo="{{item}}"
     state=present
@@ -18,12 +18,12 @@
 # force notifications to happen now      
 - meta: flush_handlers
 
-- name: [nodejs] install packages needed for python application
+- name: '[nodejs] install packages needed for python application'
   apt: pkg={{item}} state=present
   with_items:
     - nodejs
     
-- name: [nodejs] install gulp
+- name: '[nodejs] install gulp'
   npm: 
     name=gulp 
     global=yes

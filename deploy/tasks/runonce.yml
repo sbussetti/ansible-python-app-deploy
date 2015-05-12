@@ -2,8 +2,8 @@
 
 - include: nodejs/runonce.yml
     app={{apps[app_name]}}
-  when: 'nodejs' in app.build_steps
+  when: "'nodejs' in app.build_steps"
 
 - include: django/runonce.yml
     app={{apps[app_name]}}
-  when: 'django' in app.build_steps
+  when: "'django' in app.build_steps"

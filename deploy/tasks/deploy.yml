@@ -25,12 +25,18 @@
 
 - include: django/deploy.yml
     app={{apps[app_name]}}
-  when: 'django' in app.build_steps
+  when: "'django' in app.build_steps"
 
-- name: 'Install settings file'
+- name: Install app settings file
   template:
     src="{{app.python_app_conf_tmpl}}"
     dest="{{app.python_app_conf_path}}"
 
-- name: 'pyc cleanup'
+- name: install custom wsgi
+  template:
+    src="{{app.wsgi_tmpl}}"
+    path="{{app.wsgi_path}}"
+  when: app.wsgi_tmpl is defined
+
+- name: pyc cleanup
   command: pyclean {{app_src_root}}

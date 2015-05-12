@@ -11,16 +11,16 @@
 
 - include: app-circus.yml
     app={{apps[app_name]}}
-  when: 'circus' in app.build_steps
+  when: "'circus' in app.build_steps"
 
 - include: app-supervisor.yml
     app={{apps[app_name]}}
-  when: 'supervisor' in app.build_steps
+  when: "'supervisor' in app.build_steps"
 
 - include: app-uwsgi.yml
     app={{apps[app_name]}}
-  when: 'uwsgi' in app.build_steps
+  when: "'uwsgi' in app.build_steps"
 
 - include: app-nginx.yml
     app={{apps[app_name]}}
-  when: 'nginx' in app.build_steps
+  when: "'nginx' in app.build_steps"

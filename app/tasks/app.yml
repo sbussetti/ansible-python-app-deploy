@@ -120,9 +120,9 @@
 
 - include: nodejs/app.yml
     app={{apps[app_name]}}
-  when: 'nodejs' in app.build_steps
+  when: "'nodejs' in app.build_steps"
 
 - include: sass/app.yml
     app={{apps[app_name]}}
-  when: 'sass' in app.build_steps
+  when: "'sass' in app.build_steps"
 
