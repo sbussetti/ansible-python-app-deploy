@@ -1,0 +1,4 @@
+---
+
+- include: app.yml
+    app={{apps[app_name]}}

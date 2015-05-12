@@ -1,0 +1,128 @@
+---
+
+- name: install packages needed for python application
+  apt: pkg={{item}} state=present
+  with_items:
+    # app deps
+    - libjpeg62
+    - libjpeg62-dev
+    - libfreetype6
+    - libfreetype6-dev
+    - libmysqlclient-dev
+    - libmemcached-dev
+    - libpq-dev
+    - libssl-dev
+    - libxml2-dev
+    - libxslt1-dev
+    - zlib1g-dev
+    - postgresql-client-9.3
+    # python
+    - python-dev
+    - python-imaging
+    - python-psycopg2
+    - swig
+
+- name: symlink x86_64 library/header files
+  action: file 
+    src={{item.source}} 
+    dest={{item.target}} 
+    state=link
+  with_items:
+    - { source: '/usr/lib/x86_64-linux-gnu/libfreetype.so', target: '/usr/lib/libfreetype.so' }
+    - { source: '/usr/lib/x86_64-linux-gnu/libz.so', target: '/usr/lib/libz.so' }
+    - { source: '/usr/lib/x86_64-linux-gnu/libjpeg.so.62', target: '/usr/lib/x86_64-linux-gnu/libjpeg.so' }
+    - { source: '/usr/lib/x86_64-linux-gnu/libjpeg.so', target: '/usr/lib/libjpeg.so' }
+    - { source: '/usr/include/x86_64-linux-gnu/openssl/opensslconf.h', target: '/usr/include/openssl/opensslconf.h' }
+  when: ansible_userspace_architecture == "x86_64"
+
+- name: install global libraries with pip
+  pip: 
+    extra_args="-i {{pypi_mirror_url}}"
+    name={{item}} 
+    state=present
+  with_items:
+    - virtualenv
+    - fabric
+#"
+
+- name: App log root
+  file:
+    path={{app.log_root}}
+    owner={{app.user}}
+    group={{app.user}}
+    state=directory
+
+- name: ensure approot exists
+  file:
+    path={{app.root}}
+    owner={{app.user}}
+    group={{app.user}}
+    state=directory
+
+- name: ensure app log dir exists
+  file:
+    path={{app.log_root}}
+    owner={{app.user}}
+    group={{app.user}}
+    state=directory
+
+- name: create virtualenv
+  shell: virtualenv {{ app.venv_root }}
+  sudo: True
+  sudo_user: "{{app.user}}"
+  args:
+    executable: /bin/bash
+    creates: "{{app.venv_root}}"
+
+- name: install virtualenv base
+  sudo: True
+  sudo_user: "{{app.user}}"
+  pip:
+    extra_args="-i {{pypi_mirror_url}}"
+    name="{{item}}"
+    virtualenv="{{app.venv_root}}"
+    state=present
+  with_items: app.venv_base_libs 
+  when: app.venv_base_libs is defined
+#"
+
+- name: ensure app database is created
+  postgresql_db:
+    login_password={{db_admin_password}}
+    login_user={{db_admin_user}}
+    login_host={{dbhost}}
+    port={{dbport}}
+    name={{app.dbname}}
+    state=present
+  when: app.dbname is defined
+
+- name: ensure app db user has access to database
+  postgresql_user:
+    login_password={{db_admin_password}}
+    login_user={{db_admin_user}}
+    login_host={{dbhost}}
+    port={{dbport}}
+    db={{app.dbname}}
+    name={{app.dbuser}}
+    password={{app.dbpassword}}
+    priv=ALL
+  when: app.dbuser is defined and not db_is_rds
+
+- name: ensure app db user does not have unnecessary privilege
+  postgresql_user:
+    login_password={{db_admin_password}}
+    login_user={{db_admin_user}}
+    login_host={{dbhost}}
+    port={{dbport}}
+    name={{app.dbuser}}
+    role_attr_flags=NOSUPERUSER,NOCREATEDB,NOCREATEROLE
+  when: app.dbuser is defined and not db_is_rds
+
+- include: nodejs/app.yml
+    app={{apps[app_name]}}
+  when: 'nodejs' in app.build_steps
+
+- include: sass/app.yml
+    app={{apps[app_name]}}
+  when: 'sass' in app.build_steps
+

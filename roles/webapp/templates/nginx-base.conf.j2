@@ -1,0 +1,19 @@
+server {
+  {% block server %}
+  listen  80;
+  server_name {{app.server_name}} www.{{app.server_name}} {{subdomain}}-{{app.server_name}};
+  {% endblock server %}
+
+  {% block logs %}
+  access_log /var/log/nginx/{{app.name}}-access.log;
+  error_log /var/log/nginx/{{app.name}}-error.log error;
+  {% endblock logs %}
+
+  {% block main %}
+  location / {
+    proxy_pass http://127.0.0.1:{{app.run_port}};
+  }
+  {% endblock main %}
+
+  {% block extra %}{% endblock extra %}
+}

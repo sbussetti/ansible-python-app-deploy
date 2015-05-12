@@ -1,0 +1,21 @@
+---
+- name: ensure apt cache is up to date
+  sudo: True
+  action: apt update_cache=yes
+
+- name: install common system packages
+  sudo: True
+  apt:
+    pkg={{item}} 
+    state=present
+  with_items:
+    - git-core
+    - python-setuptools
+    - nginx
+
+- include: deploy.yml
+    app={{apps[app_name]}}
+
+- include: runonce.yml
+    app={{apps[app_name]}}
+  when: app_runonce_build

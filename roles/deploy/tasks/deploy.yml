@@ -1,0 +1,28 @@
+---
+
+- name: deploy private key
+  copy:
+    content={{app.deploy_rsa_key}}
+    dest=/home/{{app.user}}/.ssh/id_rsa-{{app.name}}
+    mode=0600
+
+- name: Deploy Source
+  git: 
+    accept_hostkey=True
+    repo={{app.repo_url}} 
+    dest={{app.src_root}} 
+    remote={{app.repo_remote}} 
+    version={{app.repo_branch}}
+    key_file=/home/{{app.user}}/.ssh/id_rsa-{{app.name}}
+
+- name: Install Python app dependencies from pip
+  pip:
+    extra_args="-i {{pypi_mirror_url}}"
+    requirements={{app.src_root}}/requirements.txt 
+    virtualenv={{app.venv_root}} 
+    state=present
+#"
+
+- include: django/deploy.yml
+    app={{apps[app_name]}}
+  when: 'django' in app.build_steps

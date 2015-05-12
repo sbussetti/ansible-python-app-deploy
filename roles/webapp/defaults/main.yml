@@ -1,0 +1,2 @@
+---
+nginx_app_conf_tmpl: 'nginx-app.conf.j2'

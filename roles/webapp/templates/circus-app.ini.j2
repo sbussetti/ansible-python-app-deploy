@@ -1,0 +1,33 @@
+[socket:{{app.name}}]
+host = {{chaussette_listen_ip}}
+port = {{app.run_port}}
+
+[watcher:{{app.name}}]
+cmd = {{app.run_command}} 
+args = {{app.run_args}}
+use_sockets = True
+numprocesses = {{app.chaussette_num_processes}}
+copy_env = True
+virtualenv = {{app.venv_root}}
+uid = {{app.user}}
+gid = {{app.user}}
+
+# log config
+stdout_stream.class = FileStream
+stdout_stream.filename = {{app.log_root}}/app-circus.log
+# 100M
+stdout_stream.max_bytes = 104857600
+stdout_stream.backup_count = 5
+
+stderr_stream.class = FileStream
+stderr_stream.filename = {{app.log_root}}/app-circus.log
+# 100M
+stderr_stream.max_bytes = 104857600
+stderr_stream.backup_count = 5
+
+{% if app.environment is defined %}
+[env:{{app.name}}]
+{% for key, value in app.environment.iteritems() %}
+{{ key }} = {{ value }}
+{% endfor %}
+{% endif %}

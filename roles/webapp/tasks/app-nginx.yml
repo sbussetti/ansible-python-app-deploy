@@ -1,0 +1,26 @@
+---
+
+- name: ensure server root dir exists
+  file:
+    path={{app.server_root_dir}}
+    owner={{app.user}}
+    group={{app.user}}
+    state=directory
+  when: app.server_root_dir is defined
+
+# nginx config
+- name: Create app config for nginx
+  sudo: True
+  template:
+    src={{app.nginx_app_conf_tmpl | default(nginx_app_conf_tmpl)}}
+    dest={{nginx_config_dir}}/sites-available/{{app.name}}.conf
+  notify:
+    - restart nginx
+- name: Enable app for nginx
+  sudo: True
+  file:
+    src={{nginx_config_dir}}/sites-available/{{app.name}}.conf
+    dest={{nginx_config_dir}}/sites-enabled/{{app.name}}.conf
+    state=link
+  notify:
+    - restart nginx

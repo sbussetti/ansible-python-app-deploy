@@ -1,0 +1,41 @@
+
+- name: '[Django] syncdb'
+  django_manage:
+    command=syncdb
+    app_path="{{app.src_root}}"
+    virtualenv="{{app.venv_root}}"
+  environment: app.environment
+
+- name: '[Django] migrate'
+  django_manage:
+    command=migrate
+    app_path="{{app.src_root}}"
+    virtualenv="{{app.venv_root}}"
+  environment: app.environment
+
+- name: '[Django] default fixtures'
+  django_manage:
+    command=loaddata
+    fixtures="default_activity_types default_message_templates"
+    app_path="{{app.src_root}}"
+    virtualenv="{{app.venv_root}}"
+  environment: app.environment
+
+- name: '[Django] Prep architect managed tables'
+  command: "{{app.venv_root}}/bin/architect partition --module {{item}}"
+  with_items:
+    - training.activities.models.activity
+    - training.analytics.models  
+  environment: app.environment
+
+# collectstatic (can't pass addl args like ignore through ansible's django_manage...)
+- name: '[Django] collectstatic'
+  command: "{{app.venv_python_path}} {{app.managepy_path}} collectstatic --clear --noinput -i _css -i *.scss -v2"
+  environment: app.environment
+
+- name: '[Django] session cleanup'
+  django_manage:
+    command=cleanup
+    app_path="{{app.src_root}}"
+    virtualenv="{{app.venv_root}}"
+  environment: app.environment

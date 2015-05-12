@@ -1,0 +1,9 @@
+---
+
+- name: '[Django] Install settings file'
+  template:
+    src=django-settings.py.j2
+    dest="{{app.src_root}}/training/settings/{{ENVIRONMENT}}.py"
+
+- name: '[Django] python cleanup'
+  command: pyclean {{app.src_root}}

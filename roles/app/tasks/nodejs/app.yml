@@ -1,0 +1,30 @@
+---
+
+- name: [nodejs] add nodesource gpg key
+  apt_key:
+    url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    state=present
+
+- name: [nodejs] add nodesource repo
+  apt_repository:
+    repo="{{item}}"
+    state=present
+  with_items:
+    - 'deb https://deb.nodesource.com/node {{ansible_distribution_release}} main'
+    - 'deb-src https://deb.nodesource.com/node {{ansible_distribution_release}} main'
+  notify:
+    - update apt
+
+# force notifications to happen now      
+- meta: flush_handlers
+
+- name: [nodejs] install packages needed for python application
+  apt: pkg={{item}} state=present
+  with_items:
+    - nodejs
+    
+- name: [nodejs] install gulp
+  npm: 
+    name=gulp 
+    global=yes
+  sudo: True

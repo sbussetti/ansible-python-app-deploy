@@ -1,0 +1,11 @@
+---
+- include: app-circus.yml
+    app={{apps[app_name]}}
+  when: app_runner == 'circus'
+
+- include: app-supervisor.yml
+    app={{apps[app_name]}}
+  when: app_runner == 'supervisor'
+
+- include: app-nginx.yml
+    app={{apps[app_name]}}
