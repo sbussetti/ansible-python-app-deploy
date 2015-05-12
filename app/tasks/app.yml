@@ -47,32 +47,32 @@
 
 - name: App log root
   file:
-    path={{app.log_root}}
+    path={{app_log_root}}
     owner={{app.user}}
     group={{app.user}}
     state=directory
 
 - name: ensure approot exists
   file:
-    path={{app.root}}
+    path={{app_root}}
     owner={{app.user}}
     group={{app.user}}
     state=directory
 
 - name: ensure app log dir exists
   file:
-    path={{app.log_root}}
+    path={{app_log_root}}
     owner={{app.user}}
     group={{app.user}}
     state=directory
 
 - name: create virtualenv
-  shell: virtualenv {{ app.venv_root }}
+  shell: virtualenv {{ app_venv_root }}
   sudo: True
   sudo_user: "{{app.user}}"
   args:
     executable: /bin/bash
-    creates: "{{app.venv_root}}"
+    creates: "{{app_venv_root}}"
 
 - name: install virtualenv base
   sudo: True
@@ -80,7 +80,7 @@
   pip:
     extra_args="-i {{pypi_mirror_url}}"
     name="{{item}}"
-    virtualenv="{{app.venv_root}}"
+    virtualenv="{{app_venv_root}}"
     state=present
   with_items: app.venv_base_libs 
   when: app.venv_base_libs is defined

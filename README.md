@@ -25,9 +25,6 @@ Example Settings
 ----------------
 
 ```yaml
-elb_region: us-east-1
-elb_name: ...
-
 apps:
     APP_KEY:
         build_steps: 
@@ -53,6 +50,8 @@ apps:
           - git+https://github.com/circus-tent/chaussette.git#egg=chaussette-1.2-py2.7
 
         nginx_app_conf_tmpl: nginx-....conf.j2
+        python_app_conf_tmpl: django-settings.py.j2
+        python_app_conf_dest: "{{app_src_root}}/???/settings/{{ENVIRONMENT}}.py"
 
         # app/deploy path stuff
         managepy_path: "{{apps_root}}/???/src/manage.py"
@@ -65,12 +64,18 @@ apps:
         venv_pip_path: "{{apps_root}}/???/venv/bin/pip"
         venv_python_path: "{{apps_root}}/???/venv/bin/python"
 
+        # general environment vars
+        environment:
+          DJANGO_SETTINGS_MODULE: "???.settings.{{ENVIRONMENT}}"
+          PYTHONPATH: "{{apps_root}}/???/src"
+          NODE_ENV: production
+
         # app db
         dbname: ...
         dbuser: ...
         dbpassword: ...
 
-        # app settings stuff
+        # ad-hoc app settings stuff
 
         email_host: ...
         email_user: ...
@@ -88,8 +93,4 @@ apps:
         salesforce_oauth_key: '...'
         salesforce_oauth_secret: '...'
 
-        environment:
-          DJANGO_SETTINGS_MODULE: "???.settings.{{ENVIRONMENT}}"
-          PYTHONPATH: "{{apps_root}}/???/src"
-          NODE_ENV: production
 ```

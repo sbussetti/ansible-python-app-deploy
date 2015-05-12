@@ -5,7 +5,7 @@
   sudo: True
   template:
     src=circus-app.ini.j2
-    dest="{{circus_config_dir}}/include/{{app.name}}.ini"
+    dest="{{circus_config_dir}}/include/{{app_name}}.ini"
   notify:
     - restart circusd
 
@@ -13,6 +13,6 @@
   sudo: True
   service: name=circusd state=started enabled=yes
 - name: restart circus app
-  command: "circusctl restart {{app.name}}"
+  command: "circusctl restart {{app_name}}"
 
 

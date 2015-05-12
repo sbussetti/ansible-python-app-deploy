@@ -1,4 +1,13 @@
 ---
 
+- name: set facts
+  set_fact:
+    app_root: "{{apps_root}}/{{app_name}}"
+    app_log_root: "{{apps_log_root}}/{{app_name}}"
+    app_src_root: "{{apps_root}}/{{app_name}}/src"
+    app_venv_root: "{{apps_root}}/{{app_name}}/venv"
+    app_venv_pip_path: "{{apps_root}}/{{app_name}}/venv/bin/pip"
+    app_venv_python_path: "{{apps_root}}/{{app_name}}/venv/bin/python"
+
 - include: app.yml
     app={{apps[app_name]}}

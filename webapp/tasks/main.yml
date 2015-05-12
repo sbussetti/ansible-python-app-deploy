@@ -1,11 +1,26 @@
 ---
+
+- name: set facts
+  set_fact:
+    app_root: "{{apps_root}}/{{app_name}}"
+    app_log_root: "{{apps_log_root}}/{{app_name}}"
+    app_src_root: "{{apps_root}}/{{app_name}}/src"
+    app_venv_root: "{{apps_root}}/{{app_name}}/venv"
+    app_venv_pip_path: "{{apps_root}}/{{app_name}}/venv/bin/pip"
+    app_venv_python_path: "{{apps_root}}/{{app_name}}/venv/bin/python"
+
 - include: app-circus.yml
     app={{apps[app_name]}}
-  when: app_runner == 'circus'
+  when: 'circus' in app.build_steps
 
 - include: app-supervisor.yml
     app={{apps[app_name]}}
-  when: app_runner == 'supervisor'
+  when: 'supervisor' in app.build_steps
+
+- include: app-uwsgi.yml
+    app={{apps[app_name]}}
+  when: 'uwsgi' in app.build_steps
 
 - include: app-nginx.yml
     app={{apps[app_name]}}
+  when: 'nginx' in app.build_steps

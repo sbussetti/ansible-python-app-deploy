@@ -5,8 +5,8 @@ server {
   {% endblock server %}
 
   {% block logs %}
-  access_log /var/log/nginx/{{app.name}}-access.log;
-  error_log /var/log/nginx/{{app.name}}-error.log error;
+  access_log /var/log/nginx/{{app_name}}-access.log;
+  error_log /var/log/nginx/{{app_name}}-error.log error;
   {% endblock logs %}
 
   {% block main %}
