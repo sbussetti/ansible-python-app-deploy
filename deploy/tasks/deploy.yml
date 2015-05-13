@@ -33,11 +33,15 @@
   template:
     src="{{app.python_app_conf_tmpl}}"
     dest="{{app.python_app_conf_path}}"
+    owner={{app.user}}
+    group={{app.user}}
 
 - name: install custom wsgi
   template:
     src="{{app.wsgi_tmpl}}"
-    path="{{app.wsgi_path}}"
+    dest="{{app.wsgi_path}}"
+    owner={{app.user}}
+    group={{app.user}}
   when: app.wsgi_tmpl is defined
 
 - name: pyc cleanup

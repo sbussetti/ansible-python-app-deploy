@@ -14,13 +14,12 @@
     - libssl-dev
     - libxml2-dev
     - libxslt1-dev
+    - swig
     - zlib1g-dev
-    - postgresql-client-9.3
     # python
     - python-dev
     - python-imaging
     - python-psycopg2
-    - swig
 
 - name: symlink x86_64 library/header files
   action: file 
@@ -33,6 +32,7 @@
     - { source: '/usr/lib/x86_64-linux-gnu/libjpeg.so.62', target: '/usr/lib/x86_64-linux-gnu/libjpeg.so' }
     - { source: '/usr/lib/x86_64-linux-gnu/libjpeg.so', target: '/usr/lib/libjpeg.so' }
     - { source: '/usr/include/x86_64-linux-gnu/openssl/opensslconf.h', target: '/usr/include/openssl/opensslconf.h' }
+    - { source: '/usr/include/freetype2', target: '/usr/include/freetype' }
   when: ansible_userspace_architecture == "x86_64"
 
 - name: install global libraries with pip
@@ -106,7 +106,7 @@
     name={{app.dbuser}}
     password={{app.dbpassword}}
     priv=ALL
-  when: app.dbuser is defined and not db_is_rds
+  when: app.dbuser is defined and not app.db_is_rds
 
 - name: ensure app db user does not have unnecessary privilege
   postgresql_user:
@@ -116,7 +116,7 @@
     port={{app.dbport}}
     name={{app.dbuser}}
     role_attr_flags=NOSUPERUSER,NOCREATEDB,NOCREATEROLE
-  when: app.dbuser is defined and not db_is_rds
+  when: app.dbuser is defined and not app.db_is_rds
 
 - include: nodejs/app.yml
     app={{apps[app_name]}}

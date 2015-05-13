@@ -1,1 +1,15 @@
 {% extends 'nginx-base.conf.j2' %}
+  
+
+{% block extra %}
+{# TODO: static conditional & better parameters #}
+
+  location /static/ {
+    root {{app_root}};
+  }
+
+  location /media/ {
+    root {{app_root}};
+  }
+
+{% endblock extra %}

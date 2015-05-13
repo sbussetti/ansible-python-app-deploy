@@ -4,6 +4,7 @@
     command=syncdb
     app_path="{{app_src_root}}"
     virtualenv="{{app_venv_root}}"
+  sudo_user: "{{app.user}}"
   environment: app.environment
 
 - name: '[Django] migrate'
@@ -11,26 +12,46 @@
     command=migrate
     app_path="{{app_src_root}}"
     virtualenv="{{app_venv_root}}"
+  sudo_user: "{{app.user}}"
   environment: app.environment
 
-- name: '[Django] default fixtures'
-  django_manage:
-    command=loaddata
-    fixtures="default_activity_types default_message_templates"
-    app_path="{{app_src_root}}"
-    virtualenv="{{app_venv_root}}"
-  environment: app.environment
+# TODO: parameterize, also install needed extensions
+#- name: '[Django] default fixtures'
+#  django_manage:
+#    command=loaddata
+#    fixtures="default_activity_types default_message_templates"
+#    app_path="{{app_src_root}}"
+#    virtualenv="{{app_venv_root}}"
+#  environment: app.environment
 
-- name: '[Django] Prep architect managed tables'
-  command: "{{app_venv_root}}/bin/architect partition --module {{item}}"
-  with_items:
-    - training.activities.models.activity
-    - training.analytics.models  
-  environment: app.environment
+# - name: '[Django] Prep architect managed tables'
+#   command: "{{app_venv_root}}/bin/architect partition --module {{item}}"
+#   with_items:
+#     - training.activities.models.activity
+#     - training.analytics.models  
+#   environment: app.environment
+
+# TODO: this all needs to be optional S3 vs local etc
+- name: '[Django] ensure static root'
+  file:
+    state=directory
+    path="{{app_root}}/static"
+    owner="{{app.user}}"
+    group="{{app.user}}"
+    mode=0775
+
+- name: '[Django] ensure media root'
+  file:
+    state=directory
+    path="{{app_root}}/media"
+    owner="{{app.user}}"
+    group="{{app.user}}"
+    mode=0775
 
 # collectstatic (can't pass addl args like ignore through ansible's django_manage...)
 - name: '[Django] collectstatic'
   command: "{{app_venv_python_path}} {{app.managepy_path}} collectstatic --clear --noinput -i _css -i *.scss -v2"
+  sudo_user: "{{app.user}}"
   environment: app.environment
 
 - name: '[Django] session cleanup'
@@ -38,4 +59,5 @@
     command=cleanup
     app_path="{{app_src_root}}"
     virtualenv="{{app_venv_root}}"
+  sudo_user: "{{app.user}}"
   environment: app.environment
