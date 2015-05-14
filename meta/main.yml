@@ -5,7 +5,9 @@ galaxy_info:
   company: Hologram Rinse
   license: Apache
   min_ansible_version: 1.9.1
-  platforms: []
+  platforms:
+    - name: Ubuntu
+      versions: all
   categories:
     - development
     - system
