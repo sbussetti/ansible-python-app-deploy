@@ -21,6 +21,7 @@
   with_items:
     - git-core
     - python-setuptools
+    - python-pip
 
 - include: web.yml
     app={{apps[app_name]}}
