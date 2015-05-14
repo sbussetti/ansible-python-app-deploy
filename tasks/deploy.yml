@@ -54,6 +54,11 @@
     group={{app.user}}
     recurse=true
 
+- include: deploy-runonce.yml
+    app={{apps[app_name]}}
+  when: app_runonce_build
+
+# POST DEPLOY    
 - name: restart circus app
   command: "circusctl restart {{app_name}}"
   when: "'circus' in app.build_steps"

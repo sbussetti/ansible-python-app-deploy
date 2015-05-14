@@ -37,7 +37,3 @@
 - include: deploy.yml
     app={{apps[app_name]}}
   when: do_deploy
-
-- include: deploy_runonce.yml
-    app={{apps[app_name]}}
-  when: do_deploy and app_runonce_build
