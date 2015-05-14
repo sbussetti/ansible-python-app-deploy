@@ -9,18 +9,18 @@
     app_venv_pip_path: "{{apps_root}}/{{app_name}}/venv/bin/pip"
     app_venv_python_path: "{{apps_root}}/{{app_name}}/venv/bin/python"
 
-- include: app-circus.yml
+- include: webapp-circus.yml
     app={{apps[app_name]}}
   when: "'circus' in app.build_steps"
 
-- include: app-supervisor.yml
+- include: webapp-supervisor.yml
     app={{apps[app_name]}}
   when: "'supervisor' in app.build_steps"
 
-- include: app-uwsgi.yml
+- include: webapp-uwsgi.yml
     app={{apps[app_name]}}
   when: "'uwsgi' in app.build_steps"
 
-- include: app-nginx.yml
+- include: webapp-nginx.yml
     app={{apps[app_name]}}
   when: "'nginx' in app.build_steps"

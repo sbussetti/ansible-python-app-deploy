@@ -1,5 +1,6 @@
----
-
+pypi_mirror_url: 'https://pypi.python.org/simple/'
+circus_config_dir: /etc/circus
+app_runonce_build: True
 nginx_app_conf_tmpl: 'nginx-app.conf.j2'
 nginx_config_dir: '/etc/nginx'
 pypi_mirror_url: 'https://pypi.python.org/simple/'

@@ -1,4 +1,5 @@
 ---
+
 - name: set facts
   set_fact:
     app_root: "{{apps_root}}/{{app_name}}"
@@ -21,9 +22,22 @@
     - git-core
     - python-setuptools
 
+- include: web.yml
+    app={{apps[app_name]}}
+  when: do_web or do_webapp
+
+- include: app.yml
+    app={{apps[app_name]}}
+  when: do_app or do_webapp
+
+- include: webapp.yml
+    app={{apps[app_name]}}
+  when: do_webapp
+
 - include: deploy.yml
     app={{apps[app_name]}}
+  when: do_deploy
 
-- include: runonce.yml
+- include: deploy_runonce.yml
     app={{apps[app_name]}}
-  when: app_runonce_build
+  when: do_deploy and app_runonce_build
