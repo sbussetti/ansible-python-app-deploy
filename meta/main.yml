@@ -3,6 +3,7 @@ galaxy_info:
   author: Steve Bussetti
   description: Ansible role for varietal python webapp code deploys
   company: Hologram Rinse
+  license: Apache
   min_ansible_version: 1.9.1
   platforms: []
   categories:
