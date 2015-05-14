@@ -12,7 +12,3 @@
 - name: ensure circusd service started
   sudo: True
   service: name=circusd state=started enabled=yes
-- name: restart circus app
-  command: "circusctl restart {{app_name}}"
-
-

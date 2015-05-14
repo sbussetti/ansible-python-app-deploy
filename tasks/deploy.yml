@@ -53,3 +53,9 @@
     owner={{app.user}}
     group={{app.user}}
     recurse=true
+
+- name: restart circus app
+  command: "circusctl restart {{app_name}}"
+  when: "'circus' in app.build_steps"
+
+# TODO: HUP for other runners (supervisor, uwsgi, etc..)
