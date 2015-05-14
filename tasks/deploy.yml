@@ -22,7 +22,7 @@
     extra_args="-i {{pypi_mirror_url}}"
     requirements={{app_src_root}}/requirements.txt 
     virtualenv={{app_venv_root}} 
-    state=present
+    state=latest
 #"
 
 - include: django/deploy.yml

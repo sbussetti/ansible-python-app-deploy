@@ -26,7 +26,7 @@
   pip:
     extra_args="-i {{pypi_mirror_url}}"
     name={{item}}
-    state=present
+    state=latest
   with_items:
     - circus
     - circus-web

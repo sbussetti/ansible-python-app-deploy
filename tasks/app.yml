@@ -39,7 +39,7 @@
   pip: 
     extra_args="-i {{pypi_mirror_url}}"
     name={{item}} 
-    state=present
+    state=latest
   with_items:
     - virtualenv
     - fabric
@@ -81,7 +81,7 @@
     extra_args="-i {{pypi_mirror_url}}"
     name="{{item}}"
     virtualenv="{{app_venv_root}}"
-    state=present
+    state=latest
   with_items: app.venv_base_libs 
   when: app.venv_base_libs is defined
 #"
