@@ -1,3 +1,8 @@
+do_web: false
+do_app: false
+do_webapp: false
+do_deploy: false 
+
 ENVIRONMENT: dev
 PUBLIC_DOMAIN: local
 
