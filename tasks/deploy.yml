@@ -22,6 +22,8 @@
     key_file="/home/{{app.user}}/.ssh/id_rsa-{{app_name}}"
 
 - name: Install Python app dependencies from pip
+  sudo: true
+  sudo_user: "{{app.user}}"
   pip:
     extra_args="-i {{pypi_mirror_url}}"
     requirements={{app_src_root}}/requirements.txt 
