@@ -10,6 +10,8 @@
     mode=0600
 
 - name: Deploy Source
+  sudo: true
+  sudo_user: "{{app.user}}"
   git: 
     accept_hostkey=True
     repo="{{app.repo_url}}"
@@ -31,6 +33,7 @@
   when: "'django' in app.build_steps"
 
 - name: Install app settings file
+  sudo: true
   template:
     src="{{app.python_app_conf_tmpl}}"
     dest="{{app.python_app_conf_path}}"
@@ -38,6 +41,7 @@
     group={{app.user}}
 
 - name: install custom wsgi
+  sudo: true
   template:
     src="{{app.wsgi_tmpl}}"
     dest="{{app.wsgi_path}}"
@@ -46,9 +50,11 @@
   when: app.wsgi_tmpl is defined
 
 - name: pyc cleanup
+  sudo: true
   command: pyclean {{app_src_root}}
 
 - name: ensure file ownership of source
+  sudo: true
   file:
     path={{app_src_root}}
     owner={{app.user}}
