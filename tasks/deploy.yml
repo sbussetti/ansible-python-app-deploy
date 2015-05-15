@@ -19,7 +19,7 @@
     dest="{{app_src_root}}" 
     remote="{{app.repo_remote}}" 
     version="{{app.repo_branch}}"
-    key_file="/home/{{deploy_user}}/.ssh/id_rsa-{{app_name}}"
+    key_file="/home/{{app.user}}/.ssh/id_rsa-{{app_name}}"
 
 - name: Install Python app dependencies from pip
   pip:
