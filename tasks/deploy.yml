@@ -2,6 +2,7 @@
 
 - name: install deploy ssh key
   sudo: true
+  sudo_user: "{{app.user}}"
   copy:
     content="{{app.deploy_rsa_key}}"
     dest=/home/{{app.user}}/.ssh/id_rsa-{{app_name}}
