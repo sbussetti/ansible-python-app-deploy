@@ -11,7 +11,7 @@
 
 - name: Deploy Source
   sudo: true
-  sudo_user: "{{deploy_user}}"
+  sudo_user: "{{app.user}}"
   git: 
     accept_hostkey=True
     repo="{{app.repo_url}}"
