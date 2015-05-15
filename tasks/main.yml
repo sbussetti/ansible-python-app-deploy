@@ -24,17 +24,25 @@
     - python-pip
 
 - include: web.yml
+  sudo: true
+  sudo_user: "{{deploy_user}}"
     app={{apps[app_name]}}
   when: do_web or do_webapp
 
 - include: app.yml
+  sudo: true
+  sudo_user: "{{deploy_user}}"
     app={{apps[app_name]}}
   when: do_app or do_webapp
 
 - include: webapp.yml
+  sudo: true
+  sudo_user: "{{deploy_user}}"
     app={{apps[app_name]}}
   when: do_webapp
 
 - include: deploy.yml
+  sudo: true
+  sudo_user: "{{deploy_user}}"
     app={{apps[app_name]}}
   when: do_deploy
