@@ -23,6 +23,11 @@
     - python-setuptools
     - python-pip
 
+# services controlled by build_steps
+- include: services.yml
+  sudo: true
+  sudo_user: "{{deploy_user}}"
+
 - include: web.yml
     app={{apps[app_name]}}
   sudo: true

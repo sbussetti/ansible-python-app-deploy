@@ -1,0 +1,4 @@
+- name: redis server install
+  roles:
+    - DavisWittman.redis
+  when: "'redis' in app.build_steps"
