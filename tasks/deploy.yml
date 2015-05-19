@@ -44,6 +44,7 @@
 
 - name: Install app settings file
   sudo: true
+  sudo_user: "{{app.user}}"
   template:
     src="{{app.python_app_conf_tmpl}}"
     dest="{{app.python_app_conf_path}}"
@@ -52,6 +53,7 @@
 
 - name: install custom wsgi
   sudo: true
+  sudo_user: "{{app.user}}"
   template:
     src="{{app.wsgi_tmpl}}"
     dest="{{app.wsgi_path}}"
