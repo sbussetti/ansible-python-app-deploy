@@ -124,5 +124,5 @@ galaxy_info:
   - system
   - web
 dependencies: 
-  - { role: DavidWittman.redis, when: "'redis' in app.build_steps" }
+  - { role: DavidWittman.redis, when: "'redis' in services" }
   

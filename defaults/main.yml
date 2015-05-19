@@ -23,3 +23,5 @@ pypi_mirror_url: 'https://pypi.python.org/simple/'
 app_listen_ip: 0.0.0.0
 
 apps: []
+
+services: []
