@@ -21,6 +21,11 @@
     version="{{app.repo_branch}}"
     key_file="/home/{{app.user}}/.ssh/id_rsa-{{app_name}}"
 
+- name: clean stray files from source dir
+  sudo: true
+  sudo_user: "{{app.user}}"
+  command: "git clean -df {{app_src_root}}"
+
 - name: Install Python app dependencies from pip
   sudo: true
   sudo_user: "{{app.user}}"
