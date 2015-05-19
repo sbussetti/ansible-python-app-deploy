@@ -24,7 +24,8 @@
 - name: clean stray files from source dir
   sudo: true
   sudo_user: "{{app.user}}"
-  command: "git clean -df {{app_src_root}}"
+  chdir: "{{app_src_root}}"
+  command: "git clean -df"
 
 - name: Install Python app dependencies from pip
   sudo: true
