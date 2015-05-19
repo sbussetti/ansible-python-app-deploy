@@ -25,6 +25,7 @@
   sudo: true
   sudo_user: "{{app.user}}"
   command: "git clean -df"
+  args:
     chdir="{{app_src_root}}"
 
 - name: Install Python app dependencies from pip
