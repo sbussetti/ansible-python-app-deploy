@@ -1,7 +1,7 @@
 ---
 - name: set facts
   set_fact:
-    app_src_project_root: "{{app_src_root}}{{app.src_path_prefix|default('', true)}}"
+    app_src_project_root: "{{app_src_root}}{{app.src_path_suffix|default('', true)}}"
 
 - name: install deploy ssh key
   sudo: true
