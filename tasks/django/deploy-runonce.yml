@@ -1,3 +1,4 @@
+- debug: var=app_src_project_root
 
 - name: '[Django] syncdb'
   django_manage:
