@@ -83,6 +83,6 @@
 # POST DEPLOY    
 - name: restart circus app
   command: "circusctl restart {{app_name}}"
-  when: "'circus' in app.build_steps"
+  when: "'circus' in app.build_steps and do_webapp"
 
 # TODO: HUP for other runners (supervisor, uwsgi, etc..)
