@@ -1,4 +1,7 @@
 ---
+- name: set facts
+  set_fact:
+    app_src_project_root: "{{app_src_root}}{{app.src_path_prefix|default('', true)}}"
 
 - name: install deploy ssh key
   sudo: true
@@ -16,7 +19,7 @@
   git: 
     accept_hostkey=True
     repo="{{app.repo_url}}"
-    dest="{{app_src_root}}" 
+    dest="{{app_src_project_root}}" 
     remote="{{app.repo_remote}}" 
     version="{{app.repo_branch}}"
     key_file="/home/{{app.user}}/.ssh/id_rsa-{{app_name}}"
@@ -26,7 +29,7 @@
   sudo_user: "{{app.user}}"
   command: "git clean -df"
   args:
-    chdir: "{{app_src_root}}"
+    chdir: "{{app_src_project_root}}"
 
 - name: Install Python app dependencies from pip
   sudo: true
@@ -63,7 +66,7 @@
 
 - name: pyc cleanup
   sudo: true
-  command: pyclean {{app_src_root}}
+  command: pyclean {{app_src_project_root}}
 
 - name: ensure file ownership of source
   sudo: true

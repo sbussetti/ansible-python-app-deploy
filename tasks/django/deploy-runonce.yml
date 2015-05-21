@@ -2,7 +2,7 @@
 - name: '[Django] syncdb'
   django_manage:
     command=syncdb
-    app_path="{{app_src_root}}"
+    app_path="{{app_src_project_root}}"
     virtualenv="{{app_venv_root}}"
   sudo_user: "{{app.user}}"
   environment: app.environment
@@ -10,7 +10,7 @@
 - name: '[Django] migrate'
   django_manage:
     command=migrate
-    app_path="{{app_src_root}}"
+    app_path="{{app_src_project_root}}"
     virtualenv="{{app_venv_root}}"
   sudo_user: "{{app.user}}"
   environment: app.environment
@@ -20,7 +20,7 @@
 #  django_manage:
 #    command=loaddata
 #    fixtures="default_activity_types default_message_templates"
-#    app_path="{{app_src_root}}"
+#    app_path="{{app_src_project_root}}"
 #    virtualenv="{{app_venv_root}}"
 #  environment: app.environment
 
@@ -57,7 +57,7 @@
 - name: '[Django] session cleanup'
   django_manage:
     command=cleanup
-    app_path="{{app_src_root}}"
+    app_path="{{app_src_project_root}}"
     virtualenv="{{app_venv_root}}"
   sudo_user: "{{app.user}}"
   environment: app.environment
