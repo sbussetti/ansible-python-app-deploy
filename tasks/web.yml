@@ -82,6 +82,22 @@
   notify:
     - restart nginx
 
+- name: Create default nginx site
+  sudo: True
+  template:
+    src='nginx-default.conf.j2'
+    dest={{nginx_config_dir}}/sites-available/default.conf
+  notify:
+    - restart nginx
+- name: Enable app for nginx
+  sudo: True
+  file:
+    src={{nginx_config_dir}}/sites-available/default.conf
+    dest={{nginx_config_dir}}/sites-enabled/default.conf
+    state=link
+  notify:
+    - restart nginx
+
 # - name: install htpasswd file
 #   copy:
 #     src=htpasswd

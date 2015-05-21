@@ -1,0 +1,13 @@
+# TODO: this merely verifies that nginx is up..
+# we should extend this for appservers
+# to ensure circusd is active
+server {
+  listen 80;
+  location / {
+     deny all;
+  }
+  location /elb-status {
+    access_log off;
+    return 200;
+  }
+}
