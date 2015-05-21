@@ -51,9 +51,11 @@
 
 # collectstatic (can't pass addl args like ignore through ansible's django_manage...)
 - name: '[Django] collectstatic'
-  command: "{{app_venv_python_path}} {{app.managepy_path}} collectstatic --clear --noinput -i _css -i *.scss -v2"
+  command: "{{app_venv_python_path}} manage.py collectstatic --clear --noinput -i _css -i *.scss -v2"
   sudo_user: "{{app.user}}"
   environment: app.environment
+  args:
+    chdir="{{app_src_project_root}}"
 
 - name: '[Django] session cleanup'
   django_manage:

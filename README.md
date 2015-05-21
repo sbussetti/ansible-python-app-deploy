@@ -57,7 +57,6 @@ apps:
         python_app_conf_dest: "{{app_src_root}}/???/settings/{{ENVIRONMENT}}.py"
 
         # app/deploy path stuff
-        managepy_path: "{{apps_root}}/???/src/manage.py"
         run_command: "{{apps_root}}/???/venv/bin/chaussette"
         run_args: "--fd $(circus.sockets.???) --backend gevent ???.wsgi.application"
         run_port: 8080
