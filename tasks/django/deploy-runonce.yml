@@ -56,6 +56,7 @@
   environment: app.environment
   args:
     chdir: "{{app_src_project_root}}"
+  when: app.django_collectstatic is defined and app.django_collectstatic
 
 - name: '[Django] session cleanup'
   django_manage:
@@ -64,3 +65,4 @@
     virtualenv="{{app_venv_root}}"
   sudo_user: "{{app.user}}"
   environment: app.environment
+  when: app.django_cleanup is defined and app.django_cleanup
