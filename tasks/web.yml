@@ -1,5 +1,7 @@
 ---
 # TODO parameterized to respect app.build_steps
+# need to balance that against fact that these
+# are all server wide installs...
 
 - name: add nginx ppa
   action: apt_repository repo=ppa:nginx/stable state=present

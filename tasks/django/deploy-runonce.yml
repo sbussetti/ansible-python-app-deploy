@@ -6,6 +6,7 @@
     virtualenv="{{app_venv_root}}"
   sudo_user: "{{app.user}}"
   environment: app.environment
+  when: app.django_syncdb
 
 - name: '[Django] migrate'
   django_manage:
@@ -14,6 +15,7 @@
     virtualenv="{{app_venv_root}}"
   sudo_user: "{{app.user}}"
   environment: app.environment
+  when: app.django_migrate
 
 # TODO: parameterize, also install needed extensions
 #- name: '[Django] default fixtures'
