@@ -124,6 +124,6 @@ galaxy_info:
   - system
   - web
 dependencies: 
-  - { role: DavidWittman.redis, when: "'redis' in services" }
-  - { role: Stouts.elasticsearch, when: "'elasticsearch' in services" }
+  - { role: DavidWittman.redis, when: "'redis' in services" and do_web }
+  - { role: Stouts.elasticsearch, when: "'elasticsearch' in services" and do_web }
   
