@@ -55,7 +55,7 @@
   sudo_user: "{{app.user}}"
   environment: app.environment
   args:
-    chdir="{{app_src_project_root}}"
+    chdir: "{{app_src_project_root}}"
 
 - name: '[Django] session cleanup'
   django_manage:
