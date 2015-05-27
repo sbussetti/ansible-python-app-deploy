@@ -18,6 +18,8 @@
   sudo_user: "{{app.user}}"
   git: 
     accept_hostkey=True
+    depth=1
+    force=True
     repo="{{app.repo_url}}"
     dest="{{app_src_root}}" 
     remote="{{app.repo_remote}}" 
