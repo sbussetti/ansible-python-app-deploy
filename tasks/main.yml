@@ -40,6 +40,7 @@
   local_action: route53
   sudo: False
   args:
+    private_zone: false
     command: create
     overwrite: True
     zone: "{{item.zone}}"
