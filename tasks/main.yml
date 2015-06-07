@@ -35,7 +35,7 @@
     aws_secret_key: "{{aws_secret_access_key}}"
   with_items:
     - { record: "{{subdomain}}.{{private_domain}}", zone: "{{private_domain}}", value: "{{ansible_default_ipv4.address}}" }
-    - { record: "{{subdomain}}.{{public_domain}}", zone: "{{public_domain}}", value: {{ lookup('dns', inventory_hostname) }} }
+    - { record: "{{subdomain}}.{{public_domain}}", zone: "{{public_domain}}", value: "{{ lookup('dns', inventory_hostname) }}" }
 
 # services controlled by build_steps
 - include: services.yml
