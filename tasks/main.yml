@@ -19,39 +19,11 @@
     - python-setuptools
     - python-pip
 
-- name: ensure registration of default private domain names
-  local_action: route53
-  sudo: False
-  args:
-    private_zone: true
-    command: create
-    overwrite: True
-    zone: "{{item.zone}}"
-    record: "{{item.record}}"
-    type: A
-    ttl: 300
-    value: "{{item.value}}" 
-    aws_access_key: "{{aws_access_key_id}}"
-    aws_secret_key: "{{aws_secret_access_key}}"
-  with_items:
-    - { record: "{{subdomain}}.{{private_domain}}", zone: "{{private_domain}}", value: "{{ansible_default_ipv4.address}}" }
-
-- name: ensure registration of default public domain names
-  local_action: route53
-  sudo: False
-  args:
-    private_zone: false
-    command: create
-    overwrite: True
-    zone: "{{item.zone}}"
-    record: "{{item.record}}"
-    type: A
-    ttl: 300
-    value: "{{item.value}}" 
-    aws_access_key: "{{aws_access_key_id}}"
-    aws_secret_key: "{{aws_secret_access_key}}"
-  with_items:
-    - { record: "{{subdomain}}.{{public_domain}}", zone: "{{public_domain}}", value: "{{ lookup('dns', inventory_hostname) }}" }
+- include: aws.yml
+    app={{apps[app_name]}}
+  sudo: true
+  sudo_user: "{{deploy_user}}"
+  when: aws_secret_access_key is defined
 
 # services controlled by build_steps
 - include: services.yml
