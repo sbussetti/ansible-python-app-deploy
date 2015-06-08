@@ -113,7 +113,7 @@
   notify:
     - restart nginx
 
-- name: "[web] Enable app for nginx"
+- name: "[web] Enable default site for nginx"
   sudo: true
   sudo_user: root
   sudo: True
