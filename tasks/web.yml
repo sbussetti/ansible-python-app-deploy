@@ -3,14 +3,14 @@
 # need to balance that against fact that these
 # are all server wide installs...
 
-- name: add nginx ppa
+- name: "[web] add nginx ppa"
   action: apt_repository repo=ppa:nginx/stable state=present
   notify:
     - update apt
 # force notification to happen now      
 - meta: flush_handlers
 
-- name: install packages needed for webservers
+- name: "[web] install packages needed for webservers"
   apt: pkg={{ item }} state=present
   with_items:
     - nginx         
@@ -21,10 +21,10 @@
     # supervisor
     - supervisor 
 
-- name: supervisor service state
+- name: "[web] supervisor service state"
   service: name=supervisor state=started enabled=yes
 
-- name: install global libraries with pip
+- name: "[web] install global libraries with pip"
   sudo: true
   pip:
     extra_args="-i {{pypi_mirror_url}}"
@@ -35,18 +35,18 @@
     - circus-web
 #"
 
-- name: Service file for circusd
+- name: "[web] Service file for circusd"
   template:
     src=circus-service.conf.j2
     dest="/etc/init/circusd.conf"
 
-- name: Circus config dir
+- name: "[web] Circus config dir"
   file:
     path="{{circus_config_dir}}/include"
     state=directory
     mode=0755
 
-- name: Circus config file
+- name: "[web] Circus config file"
   sudo: True
   template:
     src=circus.ini.j2
@@ -55,10 +55,10 @@
   notify:
     - restart circusd
 
-- name: circusd service state
+- name: "[web] circusd service state"
   service: name=circusd state=started enabled=yes
 
-- name: nginx config for circus panel
+- name: "[web] nginx config for circus panel"
   template:
     src=nginx-circus-panel.conf.j2
     dest={{nginx_config_dir}}/sites-available/circus.conf
@@ -69,28 +69,29 @@
   notify:
     - restart nginx
 
-- name: install main nginx conf
+- name: "[web] install main nginx conf"
   copy:
     src=nginx.conf
     dest={{nginx_config_dir}}/nginx.conf
   notify:
     - restart nginx
 
-- name: remove default nginx site
+- name: "[web] remove default nginx site"
   file:
     path={{nginx_config_dir}}/sites-enabled/default 
     state=absent
   notify:
     - restart nginx
 
-- name: Create default nginx site
+- name: "[web] Create default nginx site"
   sudo: True
   template:
     src='nginx-default.conf.j2'
     dest={{nginx_config_dir}}/sites-available/default.conf
   notify:
     - restart nginx
-- name: Enable app for nginx
+
+- name: "[web] Enable app for nginx"
   sudo: True
   file:
     src={{nginx_config_dir}}/sites-available/default.conf
@@ -106,6 +107,6 @@
 #   notify:
 #    - restart nginx
 
-- name: nginx service state
+- name: "[web] nginx service state"
   service: name="nginx" enabled=yes state=started
 

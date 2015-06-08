@@ -1,6 +1,6 @@
 ---
 
-- name: install packages needed for python application
+- name: "[app] install packages needed for python application"
   apt: pkg={{item}} state=present
   with_items:
     # app deps
@@ -21,7 +21,7 @@
     - python-imaging
     - python-psycopg2
 
-- name: symlink x86_64 library/header files
+- name: "[app] symlink x86_64 library/header files"
   action: file 
     src={{item.source}} 
     dest={{item.target}} 
@@ -35,7 +35,7 @@
     - { source: '/usr/include/freetype2', target: '/usr/include/freetype' }
   when: ansible_userspace_architecture == "x86_64"
 
-- name: install global libraries with pip
+- name: "[app] install global libraries with pip"
   sudo: true
   pip: 
     extra_args="-i {{pypi_mirror_url}}"
@@ -46,28 +46,28 @@
     - fabric
 #"
 
-- name: App log root
+- name: "[app] App log root"
   file:
     path={{app_log_root}}
     owner={{app.user}}
     group={{app.user}}
     state=directory
 
-- name: ensure approot exists
+- name: "[app] ensure approot exists"
   file:
     path={{app_root}}
     owner={{app.user}}
     group={{app.user}}
     state=directory
 
-- name: ensure app log dir exists
+- name: "[app] ensure app log dir exists"
   file:
     path={{app_log_root}}
     owner={{app.user}}
     group={{app.user}}
     state=directory
 
-- name: create virtualenv
+- name: "[app] create virtualenv"
   shell: virtualenv {{ app_venv_root }}
   sudo: True
   sudo_user: "{{app.user}}"
@@ -75,7 +75,7 @@
     executable: /bin/bash
     creates: "{{app_venv_root}}"
 
-- name: install virtualenv base
+- name: "[app] install virtualenv base"
   sudo: True
   sudo_user: "{{app.user}}"
   pip:
@@ -87,7 +87,7 @@
   when: app.venv_base_libs is defined
 #"
 
-- name: ensure app database is created
+- name: "[app] ensure app database is created"
   postgresql_db:
     login_password={{db_admin_password}}
     login_user={{db_admin_user}}
@@ -97,7 +97,7 @@
     state=present
   when: app.dbname is defined
 
-- name: ensure app db user has access to database
+- name: "[app] ensure app db user has access to database"
   postgresql_user:
     login_password={{db_admin_password}}
     login_user={{db_admin_user}}
@@ -109,7 +109,7 @@
     priv=ALL
   when: app.dbuser is defined and not app.db_is_rds
 
-- name: ensure app db user does not have unnecessary privilege
+- name: "[app] ensure app db user does not have unnecessary privilege"
   postgresql_user:
     login_password={{db_admin_password}}
     login_user={{db_admin_user}}
