@@ -36,6 +36,7 @@
   when: ansible_userspace_architecture == "x86_64"
 
 - name: install global libraries with pip
+  sudo: true
   pip: 
     extra_args="-i {{pypi_mirror_url}}"
     name={{item}} 
