@@ -26,6 +26,7 @@
 
 - name: "[web] install global libraries with pip"
   sudo: true
+  sudo_user: root
   pip:
     extra_args="-i {{pypi_mirror_url}}"
     name={{item}}
