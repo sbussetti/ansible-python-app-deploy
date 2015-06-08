@@ -4,6 +4,8 @@
 # are all server wide installs...
 
 - name: "[web] add nginx ppa"
+  sudo: true
+  sudo_user: root
   action: apt_repository repo=ppa:nginx/stable state=present
   notify:
     - update apt
@@ -11,6 +13,8 @@
 - meta: flush_handlers
 
 - name: "[web] install packages needed for webservers"
+  sudo: true
+  sudo_user: root
   apt: pkg={{ item }} state=present
   with_items:
     - nginx         
@@ -22,6 +26,8 @@
     - supervisor 
 
 - name: "[web] supervisor service state"
+  sudo: true
+  sudo_user: root
   service: name=supervisor state=started enabled=yes
 
 - name: "[web] install global libraries with pip"
@@ -37,18 +43,23 @@
 #"
 
 - name: "[web] Service file for circusd"
+  sudo: true
+  sudo_user: root
   template:
     src=circus-service.conf.j2
     dest="/etc/init/circusd.conf"
 
 - name: "[web] Circus config dir"
+  sudo: true
+  sudo_user: root
   file:
     path="{{circus_config_dir}}/include"
     state=directory
     mode=0755
 
 - name: "[web] Circus config file"
-  sudo: True
+  sudo: true
+  sudo_user: root
   template:
     src=circus.ini.j2
     dest="/etc/circus/circus.ini"
@@ -57,9 +68,13 @@
     - restart circusd
 
 - name: "[web] circusd service state"
+  sudo: true
+  sudo_user: root
   service: name=circusd state=started enabled=yes
 
 - name: "[web] nginx config for circus panel"
+  sudo: true
+  sudo_user: root
   template:
     src=nginx-circus-panel.conf.j2
     dest={{nginx_config_dir}}/sites-available/circus.conf
@@ -71,6 +86,8 @@
     - restart nginx
 
 - name: "[web] install main nginx conf"
+  sudo: true
+  sudo_user: root
   copy:
     src=nginx.conf
     dest={{nginx_config_dir}}/nginx.conf
@@ -78,6 +95,8 @@
     - restart nginx
 
 - name: "[web] remove default nginx site"
+  sudo: true
+  sudo_user: root
   file:
     path={{nginx_config_dir}}/sites-enabled/default 
     state=absent
@@ -85,6 +104,8 @@
     - restart nginx
 
 - name: "[web] Create default nginx site"
+  sudo: true
+  sudo_user: root
   sudo: True
   template:
     src='nginx-default.conf.j2'
@@ -93,6 +114,8 @@
     - restart nginx
 
 - name: "[web] Enable app for nginx"
+  sudo: true
+  sudo_user: root
   sudo: True
   file:
     src={{nginx_config_dir}}/sites-available/default.conf
@@ -109,5 +132,7 @@
 #    - restart nginx
 
 - name: "[web] nginx service state"
+  sudo: true
+  sudo_user: root
   service: name="nginx" enabled=yes state=started
 
