@@ -42,6 +42,15 @@
     - circus-web
 #"
 
+- name: "[web] force tornado <4 for circus compat"
+  sudo: true
+  sudo_user: root
+  pip:
+    extra_args="-i {{pypi_mirror_url}}"
+    name=tornado
+    version='>=3.0,<4'
+    state=latest
+
 - name: "[web] Service file for circusd"
   sudo: true
   sudo_user: root
