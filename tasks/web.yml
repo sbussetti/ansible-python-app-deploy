@@ -48,7 +48,7 @@
   pip:
     extra_args="-i {{pypi_mirror_url}}"
     name=tornado
-    version='>=3.0,<4'
+    version='3.2.2'
 
 - name: "[web] Service file for circusd"
   sudo: true
