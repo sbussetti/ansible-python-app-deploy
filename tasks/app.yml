@@ -52,6 +52,8 @@
 #"
 
 - name: "[app] App log root"
+  sudo: true
+  sudo_user: root
   file:
     path={{app_log_root}}
     owner={{app.user}}
@@ -59,6 +61,8 @@
     state=directory
 
 - name: "[app] ensure approot exists"
+  sudo: true
+  sudo_user: root
   file:
     path={{app_root}}
     owner={{app.user}}
@@ -66,6 +70,8 @@
     state=directory
 
 - name: "[app] ensure app log dir exists"
+  sudo: true
+  sudo_user: root
   file:
     path={{app_log_root}}
     owner={{app.user}}
