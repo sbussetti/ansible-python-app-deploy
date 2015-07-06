@@ -34,6 +34,7 @@
 
 # TODO: this all needs to be optional S3 vs local etc
 - name: '[Django] ensure static root'
+  sudo_user: "{{app.user}}"
   file:
     state=directory
     path="{{app_root}}/static"
@@ -42,6 +43,7 @@
     mode=0775
 
 - name: '[Django] ensure media root'
+  sudo_user: "{{app.user}}"
   file:
     state=directory
     path="{{app_root}}/media"
