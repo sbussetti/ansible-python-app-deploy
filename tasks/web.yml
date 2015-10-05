@@ -93,6 +93,26 @@
   notify:
     - restart nginx
 
+- name: "[web] ensure nginx log ownership"
+  sudo: true
+  sudo_user: root
+  file:
+    path=/var/log/nginx
+    owner=www-data
+    group=adm
+    recurse=yes
+  notify:
+    - restart nginx
+
+- name: "[web] install nginx logrotate conf"
+  sudo: true
+  sudo_user: root
+  copy:
+    src=logrotate-nginx
+    dest=/etc/logrotate.d/nginx
+  notify:
+    - restart nginx
+
 - name: "[web] install main nginx conf"
   sudo: true
   sudo_user: root
