@@ -78,6 +78,8 @@
     group={{app.user}}
     recurse=true
 
+- debug: msg="System {{inventory_hostname}} does runonce({{app_runonce_build}})"
+
 - include: deploy-runonce.yml
     app={{apps[app_name]}}
   when: app_runonce_build
