@@ -81,6 +81,7 @@
 - include: deploy-runonce.yml
     app={{apps[app_name]}}
   run_once: true
+  when: app_run_once_candidate
 
 # POST DEPLOY    
 - name: restart circus app

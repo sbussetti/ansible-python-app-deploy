@@ -6,6 +6,7 @@
   sudo_user: "{{app.user}}"
   environment: app.environment
   when: app.django_syncdb is defined and app.django_syncdb
+  run_once: true
 
 - name: '[Django] migrate'
   django_manage:
@@ -15,6 +16,7 @@
   sudo_user: "{{app.user}}"
   environment: app.environment
   when: app.django_migrate is defined and app.django_migrate
+  run_once: true
 
 # TODO: parameterize, also install needed extensions
 #- name: '[Django] default fixtures'
@@ -41,6 +43,7 @@
     owner="{{app.user}}"
     group="{{app.user}}"
     mode=0775
+  run_once: true
 
 - name: '[Django] ensure media root'
   sudo_user: "{{app.user}}"
@@ -50,6 +53,7 @@
     owner="{{app.user}}"
     group="{{app.user}}"
     mode=0775
+  run_once: true
 
 # collectstatic (can't pass addl args like ignore through ansible's django_manage...)
 - name: '[Django] collectstatic'
@@ -59,6 +63,7 @@
   args:
     chdir: "{{app_src_project_root}}"
   when: app.django_collectstatic is defined and app.django_collectstatic
+  run_once: true
 
 - name: '[Django] session cleanup'
   django_manage:
@@ -68,3 +73,4 @@
   sudo_user: "{{app.user}}"
   environment: app.environment
   when: app.django_cleanup is defined and app.django_cleanup
+  run_once: true
