@@ -81,6 +81,7 @@
 - include: deploy-runonce.yml
     app={{apps[app_name]}}
   when: deploy_runonce is not defined or not deploy_runonce
+  run_once: true
 
 - set_fact:
     deploy_runonce: true
