@@ -78,17 +78,23 @@
     group={{app.user}}
     recurse=true
 
-- debug: msg="Deploy Runonce? {{deploy_runonce}}"
-#"
+- set_fact:
+    deploy_runonce_ran: true
+  when: hostvars[item]['deploy_runonce_ran'] is defined
+  with_items: groups['all']
 
 - include: deploy-runonce.yml
     app={{apps[app_name]}}
-  when: deploy_runonce is not defined or not deploy_runonce
-  run_once: true
+  when: deploy_runonce_ran is not defined or not deploy_runonce_ran
+
+- debug: msg="RUNNING ONCE"
+  when: deploy_runonce_ran is not defined or not deploy_runonce_ran
+
+- debug: msg="ALREADY RAN"
+  when: deploy_runonce_ran is defined and deploy_runonce_ran
 
 - set_fact:
-    deploy_runonce: true
-  run_once: true
+    deploy_runonce_ran: true
 
 # POST DEPLOY    
 - name: restart circus app
