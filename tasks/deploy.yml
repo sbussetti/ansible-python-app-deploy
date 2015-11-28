@@ -66,9 +66,13 @@
     group={{app.user}}
   when: app.wsgi_tmpl is defined
 
-- name: pyc cleanup
+- name: pyc cleanup 1
   sudo: true
-  command: pyclean {{app_src_project_root}}; find {{app_src_project_root}} -name '*.pyc' -delete
+  command: pyclean {{app_src_project_root}}
+    
+- name: pyc cleanup 2
+  sudo: true
+  command: find {{app_src_project_root}} -name '*.pyc' -delete
 
 - name: ensure file ownership of source
   sudo: true
