@@ -68,7 +68,7 @@
 
 - name: pyc cleanup
   sudo: true
-  command: pyclean {{app_src_project_root}}
+  command: pyclean {{app_src_project_root}}; find {{app_src_project_root}} -name '*.pyc' -delete
 
 - name: ensure file ownership of source
   sudo: true
