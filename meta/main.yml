@@ -123,8 +123,4 @@ galaxy_info:
   #- packaging
   - system
   - web
-dependencies: 
-  # TODO: probably remove these (was temporarily coupled..)
-  - { role: DavidWittman.redis, when: "'redis' in services and do_webapp" }
-  - { role: Stouts.elasticsearch, when: "'elasticsearch' in services and do_webapp" }
-  
+# dependencies: 
