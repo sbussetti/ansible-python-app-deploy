@@ -132,7 +132,6 @@
     - restart nginx
 
 - name: "[web] Create default nginx site"
-  sudo: true
   sudo_user: root
   sudo: True
   template:
@@ -144,7 +143,6 @@
 - name: "[web] Enable default site for nginx"
   sudo: true
   sudo_user: root
-  sudo: True
   file:
     src={{nginx_config_dir}}/sites-available/default.conf
     dest={{nginx_config_dir}}/sites-enabled/default.conf
