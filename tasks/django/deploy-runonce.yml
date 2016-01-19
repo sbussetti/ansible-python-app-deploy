@@ -4,7 +4,7 @@
     app_path="{{app_src_project_root}}"
     virtualenv="{{app_venv_root}}"
   sudo_user: "{{app.user}}"
-  environment: {{app.environment}}
+  environment: "{{app.environment}}"
   when: app.django_syncdb is defined and app.django_syncdb
 
 - name: '[Django] migrate'
@@ -13,7 +13,7 @@
     app_path="{{app_src_project_root}}"
     virtualenv="{{app_venv_root}}"
   sudo_user: "{{app.user}}"
-  environment: {{app.environment}}
+  environment: "{{app.environment}}"
   when: app.django_migrate is defined and app.django_migrate
 
 # TODO: parameterize, also install needed extensions
@@ -55,7 +55,7 @@
 - name: '[Django] collectstatic'
   command: "{{app_venv_python_path}} manage.py collectstatic --noinput -i _css -i *.scss -v2"
   sudo_user: "{{app.user}}"
-  environment: {{app.environment}}
+  environment: "{{app.environment}}"
   args:
     chdir: "{{app_src_project_root}}"
   when: app.django_collectstatic is defined and app.django_collectstatic
@@ -66,5 +66,5 @@
     app_path="{{app_src_project_root}}"
     virtualenv="{{app_venv_root}}"
   sudo_user: "{{app.user}}"
-  environment: {{app.environment}}
+  environment: "{{app.environment}}"
   when: app.django_cleanup is defined and app.django_cleanup
