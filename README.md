@@ -60,8 +60,7 @@ apps:
         run_command: "{{apps_root}}/???/venv/bin/chaussette"
         run_args: "--fd $(circus.sockets.???) --backend gevent ???.wsgi.application"
         run_port: 8080
-        chaussette_num_processes: 3
-        chaussette_entry_point: "???.wsgi.application"
+        num_processes: 3
         wsgi_path: "{{apps_root}}/???/src/???/wsgi.py"
         venv_pip_path: "{{apps_root}}/???/venv/bin/pip"
         venv_python_path: "{{apps_root}}/???/venv/bin/python"
