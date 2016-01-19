@@ -31,5 +31,5 @@
     aws_access_key: "{{aws_access_key_id}}"
     aws_secret_key: "{{aws_secret_access_key}}"
   with_items:
-    - { record: "{{subdomain}}.{{public_domain}}", zone: "{{public_domain}}", value: "{{ lookup('dns', inventory_hostname) }}" }
+    - { record: "{{subdomain}}.{{public_domain}}", zone: "{{public_domain}}", value: "{{ lookup('dig', inventory_hostname) }}" }
 
