@@ -4,11 +4,11 @@
   command: 'npm install'
   args:
     chdir: "{{app_src_root}}"
-  environment: app.environment
+  environment: {{app.environment}}
 
 # gulp build
 - name: '[nodejs] build static assets'
   command: 'gulp'
   args:
     chdir: "{{app_src_root}}"
-  environment: app.environment
+  environment: {{app.environment}}
