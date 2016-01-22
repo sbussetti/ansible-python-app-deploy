@@ -91,7 +91,8 @@
   sudo_user: "{{app.user}}"
   pip:
     extra_args="-i {{pypi_mirror_url}}"
-    name="{{item}}"
+    name="{{item.name}}"
+    version="{{item.version}}"
     virtualenv="{{app_venv_root}}"
     state=latest
   with_items: app.venv_base_libs 
