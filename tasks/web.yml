@@ -36,7 +36,8 @@
   sudo_user: root
   pip:
     extra_args="-i {{pypi_mirror_url}}"
-    name={{item}}
+    name="{{item.name}}"
+    version="{{item.version}}"
     state=present
   with_items:
     - {
