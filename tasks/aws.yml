@@ -14,7 +14,7 @@
     aws_access_key: "{{aws_access_key_id}}"
     aws_secret_key: "{{aws_secret_access_key}}"
   with_items:
-    - { record: "{{subdomain}}.{{private_domain}}", zone: "{{private_domain}}", value: "{{ansible_default_ipv4.address}}" }
+    - { record: "{{subdomain}}.{{private_domain}}", zone: "{{private_domain}}", value: "{{ansible_eth0.ipv4.address}}" }
 
 - name: ensure registration of default public domain names
   local_action: route53
