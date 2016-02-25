@@ -12,6 +12,7 @@ virtualenv = {{app_venv_root}}
 uid = {{app.user}}
 gid = {{app.user}}
 rlimit_stack = {{app.max_stack | default(536870912)}}
+rlimit_as = {{app.max_stack | default(1073741824)}}
 
 # log config
 stdout_stream.class = FileStream
