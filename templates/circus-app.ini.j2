@@ -11,7 +11,7 @@ copy_env = True
 virtualenv = {{app_venv_root}}
 uid = {{app.user}}
 gid = {{app.user}}
-rlimit_as = {{app.max_as | default(536870912)}}
+rlimit_stack = {{app.max_stack | default(536870912)}}
 
 # log config
 stdout_stream.class = FileStream
