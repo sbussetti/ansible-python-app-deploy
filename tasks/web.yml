@@ -59,6 +59,8 @@
   template:
     src=circus-service.conf.j2
     dest="/etc/init/circusd.conf"
+  notify:
+    - restart circusd
 
 - name: "[web] Circus config dir"
   sudo: true
