@@ -85,7 +85,7 @@
 - set_fact:
     deploy_runonce_ran: true
   when: hostvars[item]['deploy_runonce_ran'] is defined
-  with_items: groups['all']
+  with_items: "{{groups['all']}}"
 
 - include: deploy-runonce.yml
     app={{apps[app_name]}}

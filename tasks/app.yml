@@ -95,7 +95,7 @@
     version="{{item.version}}"
     virtualenv="{{app_venv_root}}"
     state=present
-  with_items: app.venv_base_libs 
+  with_items: '{{app.venv_base_libs}}' 
   when: app.venv_base_libs is defined
 #"
 
