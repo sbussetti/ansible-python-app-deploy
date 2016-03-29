@@ -60,23 +60,23 @@
     chdir: "{{app_src_project_root}}"
   when: app.django_collectstatic is defined and app.django_collectstatic
 
-# compress uses this local cache, so we wanna ensure we're in-sync with the static bucket  
-- name: '[Django] compress list static bucket'
-  s3:
-    bucket="{{app.static_bucket}}"
-    mode=list
-  register: staticfiles
-  when: app.django_compress is defined and app.django_compress
-
-- name: '[Django] compress pre-sync'
-  s3:
-    bucket="{{app.static_bucket}}"
-    object="{{item}}"
-    dest="{{app.static_root}}{{item}}"
-    mode=get
-    overwrite=different
-  with_items: staticfiles
-  when: app.django_compress is defined and app.django_compress
+    # # compress uses this local cache, so we wanna ensure we're in-sync with the static bucket  
+    # - name: '[Django] compress list static bucket'
+    #   s3:
+    #     bucket="{{app.static_bucket}}"
+    #     mode=list
+    #   register: staticfiles
+    #   when: app.django_compress is defined and app.django_compress
+    # 
+    # - name: '[Django] compress pre-sync'
+    #   s3:
+    #     bucket="{{app.static_bucket}}"
+    #     object="{{item}}"
+    #     dest="{{app.static_root}}{{item}}"
+    #     mode=get
+    #     overwrite=different
+    #   with_items: staticfiles
+    #   when: app.django_compress is defined and app.django_compress
 
 - name: '[Django] compress'
   command: "{{app_venv_python_path}} manage.py compress"
