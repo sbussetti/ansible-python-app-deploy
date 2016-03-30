@@ -98,7 +98,10 @@
   when: deploy_runonce_ran is defined and deploy_runonce_ran
 
 - set_fact:
+    # don't do it again
     deploy_runonce_ran: true
+    # but also tag which instance did it
+    deploy_runonce_target: true
 
 # POST DEPLOY    
 - name: restart circus app
