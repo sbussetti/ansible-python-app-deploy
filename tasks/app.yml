@@ -131,11 +131,3 @@
     role_attr_flags=NOSUPERUSER,NOCREATEDB,NOCREATEROLE
   when: app.dbuser is defined and not app.db_is_rds
 
-- include: nodejs/app.yml
-    app={{apps[app_name]}}
-  when: "'nodejs' in app.build_steps"
-
-- include: sass/app.yml
-    app={{apps[app_name]}}
-  when: "'sass' in app.build_steps"
-
