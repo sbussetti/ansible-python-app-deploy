@@ -15,6 +15,7 @@
     aws_secret_key: "{{aws_secret_access_key}}"
   with_items:
     - { record: "{{subdomain}}.{{private_domain}}", zone: "{{private_domain}}", value: "{{ansible_eth0.ipv4.address}}" }
+  when: private_domain is defined and private_domain    
 
 - name: ensure registration of default public domain names
   local_action: route53
@@ -32,5 +33,4 @@
     aws_secret_key: "{{aws_secret_access_key}}"
   with_items:
     - { record: "{{subdomain}}.{{public_domain}}", zone: "{{public_domain}}", value: "{{ ec2_ip_address }}" }
-    # - { record: "{{subdomain}}.{{public_domain}}", zone: "{{public_domain}}", value: "{{ lookup('dig', inventory_hostname) }}" }
-
+  when: public_domain is defined and public_domain    
