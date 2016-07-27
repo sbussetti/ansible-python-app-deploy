@@ -10,8 +10,8 @@
 
 # nginx config
 - name: Create app config for nginx
-  sudo: true
-  sudo_user: root
+  become: true
+  become_user: root
   template:
     src={{app.nginx_app_conf_tmpl | default(nginx_app_conf_tmpl)}}
     dest={{nginx_config_dir}}/sites-available/{{app_name}}.conf
@@ -19,8 +19,8 @@
     - restart nginx
 
 - name: Enable app for nginx
-  sudo: true
-  sudo_user: root
+  become: true
+  become_user: root
   file:
     src={{nginx_config_dir}}/sites-available/{{app_name}}.conf
     dest={{nginx_config_dir}}/sites-enabled/{{app_name}}.conf

@@ -15,7 +15,7 @@ Example Usage
   serial: 1
   hosts: ...
   user: ...
-  sudo: False
+  become: False
   roles: 
     - { role: deploy, app_name: 'APP_KEY' }
 ```

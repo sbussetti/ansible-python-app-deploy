@@ -3,7 +3,7 @@
     command=syncdb
     app_path="{{app_src_project_root}}"
     virtualenv="{{app_venv_root}}"
-  sudo_user: "{{app.user}}"
+  become_user: "{{app.user}}"
   environment: "{{app.environment}}"
   when: app.django_syncdb is defined and app.django_syncdb
 
@@ -12,7 +12,7 @@
     command=migrate
     app_path="{{app_src_project_root}}"
     virtualenv="{{app_venv_root}}"
-  sudo_user: "{{app.user}}"
+  become_user: "{{app.user}}"
   environment: "{{app.environment}}"
   when: app.django_migrate is defined and app.django_migrate
 
@@ -34,7 +34,7 @@
 
 # TODO: this all needs to be optional S3 vs local etc
 - name: '[Django] ensure static root'
-  sudo_user: "{{app.user}}"
+  become_user: "{{app.user}}"
   file:
     state=directory
     path="{{app_root}}/static"
@@ -44,7 +44,7 @@
   when: do_webapp
 
 - name: '[Django] ensure media root'
-  sudo_user: "{{app.user}}"
+  become_user: "{{app.user}}"
   file:
     state=directory
     path="{{app_root}}/media"
@@ -56,7 +56,7 @@
 # collectstatic (can't pass addl args like ignore through ansible's django_manage...)
 - name: '[Django] collectstatic'
   command: "{{app_venv_python_path}} manage.py collectstatic --noinput -i _css -i *.scss -v2"
-  sudo_user: "{{app.user}}"
+  become_user: "{{app.user}}"
   environment: "{{app.environment}}"
   args:
     chdir: "{{app_src_project_root}}"
@@ -67,6 +67,6 @@
     command=cleanup
     app_path="{{app_src_project_root}}"
     virtualenv="{{app_venv_root}}"
-  sudo_user: "{{app.user}}"
+  become_user: "{{app.user}}"
   environment: "{{app.environment}}"
   when: app.django_cleanup is defined and app.django_cleanup and do_webapp

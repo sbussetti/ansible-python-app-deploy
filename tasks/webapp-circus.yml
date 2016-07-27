@@ -2,8 +2,8 @@
 
 # circus config for app servers
 - name: App config for circus
-  sudo: True
-  sudo_user: root
+  become: True
+  become_user: root
   template:
     src=circus-app.ini.j2
     dest="{{circus_config_dir}}/include/{{app_name}}.ini"
@@ -11,5 +11,5 @@
     - restart circusd
 
 - name: ensure circusd service started
-  sudo: True
+  become: True
   service: name=circusd state=started enabled=yes

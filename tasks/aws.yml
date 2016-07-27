@@ -1,7 +1,7 @@
 
 - name: ensure registration of default private domain names
   local_action: route53
-  sudo: False
+  become: False
   args:
     private_zone: true
     command: create
@@ -19,7 +19,7 @@
 
 - name: ensure registration of default public domain names
   local_action: route53
-  sudo: False
+  become: False
   args:
     private_zone: false
     command: create

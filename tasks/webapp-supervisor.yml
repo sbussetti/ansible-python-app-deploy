@@ -2,7 +2,7 @@
 
 # supervisor cfg
 - name: App config for supervisor
-  sudo: True
+  become: True
   template:
     src=supervisor-app.conf.j2
     dest="{{supervisor_config_dir}}/conf.d/{{app_name}}.conf"

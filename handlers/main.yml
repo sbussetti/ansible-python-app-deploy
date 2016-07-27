@@ -1,21 +1,21 @@
 ---
 
 - name: update apt
-  sudo: True
+  become: True
   action: apt update_cache=yes
 
 - name: restart nginx
-  sudo: True
+  become: True
   service: name="nginx" state=restarted
 
 - name: restart wsgi
-  sudo: True
+  become: True
   service: name="nginx" state=restarted
 
 - name: restart circusd
-  sudo: True
+  become: True
   service: name="circusd" state=restarted
 
 - name: restart supervisor
-  sudo: True
+  become: True
   service: name="supervisor" state=restarted

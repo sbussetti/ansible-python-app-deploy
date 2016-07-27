@@ -4,8 +4,8 @@
     app_src_project_root: "{{app_src_root}}{{app.src_path_suffix|default('', true)}}"
 
 - name: install deploy ssh key
-  sudo: true
-  sudo_user: "{{app.user}}"
+  become: true
+  become_user: "{{app.user}}"
   copy:
     content="{{app.deploy_rsa_key}}"
     dest=/home/{{app.user}}/.ssh/id_rsa-{{app_name}}
@@ -14,8 +14,8 @@
     mode=0600
 
 - name: Deploy Source
-  sudo: true
-  sudo_user: "{{app.user}}"
+  become: true
+  become_user: "{{app.user}}"
   git: 
     accept_hostkey=True
     depth=1
@@ -27,15 +27,15 @@
     key_file="/home/{{app.user}}/.ssh/id_rsa-{{app_name}}"
 
 - name: clean stray files from source dir
-  sudo: true
-  sudo_user: "{{app.user}}"
+  become: true
+  become_user: "{{app.user}}"
   command: "git clean -df"
   args:
     chdir: "{{app_src_project_root}}"
 
 - name: Install Python app dependencies from pip
-  sudo: true
-  sudo_user: "{{app.user}}"
+  become: true
+  become_user: "{{app.user}}"
   pip:
     extra_args="-i {{pypi_mirror_url}}"
     requirements={{app_src_root}}/requirements.txt 
@@ -48,8 +48,8 @@
   when: "'django' in app.build_steps"
 
 - name: Install app settings file
-  sudo: true
-  sudo_user: "{{app.user}}"
+  become: true
+  become_user: "{{app.user}}"
   template:
     src="{{app.python_app_conf_tmpl}}"
     dest="{{app.python_app_conf_path}}"
@@ -57,8 +57,8 @@
     group={{app.user}}
 
 - name: install custom wsgi
-  sudo: true
-  sudo_user: "{{app.user}}"
+  become: true
+  become_user: "{{app.user}}"
   template:
     src="{{app.wsgi_tmpl}}"
     dest="{{app.wsgi_path}}"
@@ -67,15 +67,15 @@
   when: app.wsgi_tmpl is defined
 
 - name: pyc cleanup 1
-  sudo: true
+  become: true
   command: pyclean {{app_src_project_root}}
     
 - name: pyc cleanup 2
-  sudo: true
+  become: true
   command: find {{app_src_project_root}} -name '*.pyc' -delete
 
 - name: ensure file ownership of source
-  sudo: true
+  become: true
   file:
     path={{app_src_root}}
     owner={{app.user}}

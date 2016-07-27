@@ -1,8 +1,8 @@
 ---
 
 - name: "[app] install packages needed for python application"
-  sudo: true
-  sudo_user: root
+  become: true
+  become_user: root
   apt: pkg={{item}} state=present
   with_items:
     # app deps
@@ -24,8 +24,8 @@
     - python-psycopg2
 
 - name: "[app] symlink x86_64 library/header files"
-  sudo: true
-  sudo_user: root
+  become: true
+  become_user: root
   action: file 
     src={{item.source}} 
     dest={{item.target}} 
@@ -40,8 +40,8 @@
   when: ansible_userspace_architecture == "x86_64"
 
 - name: "[app] install global libraries with pip"
-  sudo: true
-  sudo_user: root
+  become: true
+  become_user: root
   pip: 
     extra_args="-i {{pypi_mirror_url}}"
     name={{item}} 
@@ -52,8 +52,8 @@
 #"
 
 - name: "[app] App log root"
-  sudo: true
-  sudo_user: root
+  become: true
+  become_user: root
   file:
     path={{app_log_root}}
     owner={{app.user}}
@@ -61,8 +61,8 @@
     state=directory
 
 - name: "[app] ensure approot exists"
-  sudo: true
-  sudo_user: root
+  become: true
+  become_user: root
   file:
     path={{app_root}}
     owner={{app.user}}
@@ -70,8 +70,8 @@
     state=directory
 
 - name: "[app] ensure app log dir exists"
-  sudo: true
-  sudo_user: root
+  become: true
+  become_user: root
   file:
     path={{app_log_root}}
     owner={{app.user}}
@@ -80,15 +80,15 @@
 
 - name: "[app] create virtualenv"
   shell: virtualenv {{ app_venv_root }}
-  sudo: True
-  sudo_user: "{{app.user}}"
+  become: True
+  become_user: "{{app.user}}"
   args:
     executable: /bin/bash
     creates: "{{app_venv_root}}"
 
 - name: "[app] install virtualenv base"
-  sudo: true
-  sudo_user: "{{app.user}}"
+  become: true
+  become_user: "{{app.user}}"
   pip:
     extra_args="-i {{pypi_mirror_url}}"
     name="{{item.name}}"
