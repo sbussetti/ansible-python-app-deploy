@@ -12,7 +12,7 @@ virtualenv = {{app_venv_root}}
 uid = {{app.user}}
 gid = {{app.user}}
 rlimit_as = {{app.rlimit_as | default(1073741824)}}
-{% if app.hooks_after_start %}hooks.after_start = {{ app.hooks_after_start }}{% endif %}
+{% if app.hooks_after_start is defined and app.hooks_after_start %}hooks.after_start = {{ app.hooks_after_start }}{% endif %}
 
 # log config
 stdout_stream.class = FileStream
