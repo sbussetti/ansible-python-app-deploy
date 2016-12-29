@@ -19,33 +19,40 @@
     - python-setuptools
     - python-pip
     - ntp
-
-- include: aws.yml
-    app={{apps[app_name]}}
-  become: true
-  become_user: "{{deploy_user}}"
-  when: aws_secret_access_key is defined
+  when: do_web or do_app
+  tags:
+    - do_web
+    - do_app
 
 - include: web.yml
     app={{apps[app_name]}}
   become: true
   become_user: "{{deploy_user}}"
-  when: do_web or do_webapp
+  when: do_web
+  tags:
+    - do_web
 
 - include: app.yml
     app={{apps[app_name]}}
   become: true
   become_user: "{{deploy_user}}"
-  when: do_app or do_webapp
+  when: do_app
+  tags:
+    - do_app
 
 - include: webapp.yml
     app={{apps[app_name]}}
   become: true
   become_user: "{{deploy_user}}"
-  when: do_webapp
+  when: do_web and do_app
+  tags:
+    - do_web
+    - do_app
 
 - include: deploy.yml
     app={{apps[app_name]}}
   become: true
   become_user: "{{deploy_user}}"
   when: do_deploy
+  tags:
+    - do_deploy

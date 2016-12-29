@@ -83,7 +83,7 @@
     recurse=true
 
 - set_fact:
-    deploy_runonce_ran: true
+    deploy_runonce_ran: "{{hostvars[item]['deploy_runonce_ran']}}"
   when: hostvars[item]['deploy_runonce_ran'] is defined
   with_items: "{{groups['all']}}"
 
@@ -97,11 +97,10 @@
 - debug: msg="ALREADY RAN"
   when: deploy_runonce_ran is defined and deploy_runonce_ran
 
+# tag which instance did it
+# and don't do it again
 - set_fact:
-    # don't do it again
-    deploy_runonce_ran: true
-    # but also tag which instance did it
-    deploy_runonce_target: true
+    deploy_runonce_ran: "{% if deploy_runonce_ran is not defined or not deploy_runonce_ran %}{{ansible_default_ipv4.address}}{% endif %}"
 
 # POST DEPLOY    
 - name: restart circus app
