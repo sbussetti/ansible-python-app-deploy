@@ -41,7 +41,7 @@
     owner="{{app.user}}"
     group="{{app.user}}"
     mode=0775
-  when: do_webapp
+  when: do_web and do_app
 
 - name: '[Django] ensure media root'
   become_user: "{{app.user}}"
@@ -51,7 +51,7 @@
     owner="{{app.user}}"
     group="{{app.user}}"
     mode=0775
-  when: do_webapp
+  when: do_web and do_app
 
 # collectstatic (can't pass addl args like ignore through ansible's django_manage...)
 - name: '[Django] collectstatic'
@@ -60,7 +60,7 @@
   environment: "{{app.environment}}"
   args:
     chdir: "{{app_src_project_root}}"
-  when: app.django_collectstatic is defined and app.django_collectstatic and do_webapp
+  when: app.django_collectstatic is defined and app.django_collectstatic and do_web and do_app
 
 - name: '[Django] session cleanup'
   django_manage:
@@ -69,4 +69,4 @@
     virtualenv="{{app_venv_root}}"
   become_user: "{{app.user}}"
   environment: "{{app.environment}}"
-  when: app.django_cleanup is defined and app.django_cleanup and do_webapp
+  when: app.django_cleanup is defined and app.django_cleanup and do_web and do_app
