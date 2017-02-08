@@ -17,12 +17,31 @@
   with_items:
     - git-core
     - python-setuptools
-    - python-pip
     - ntp
   when: do_web or do_app
   tags:
     - do_web
     - do_app
+
+- name: purge system pip
+  become: True
+  apt:
+    name=python-pip
+    state=absent
+
+- command: which pip
+  register: pip_check
+
+- name: get pip installer
+  get_url:
+    url: https://bootstrap.pypa.io/get-pip.py
+    dest: /tmp/get-pip.py
+  when: pip_check.rc == 1
+
+- name: install pip
+  become: True
+  command: python /tmp/get-pip.py
+  when: pip_check.rc == 1
 
 - include: web.yml
     app={{apps[app_name]}}
