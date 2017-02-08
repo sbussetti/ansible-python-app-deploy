@@ -30,6 +30,7 @@
     state=absent
 
 - command: which pip
+  ignore_errors: True
   register: pip_check
 
 - name: get pip installer
